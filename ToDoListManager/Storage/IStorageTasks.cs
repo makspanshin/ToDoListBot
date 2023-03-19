@@ -1,6 +1,6 @@
 ﻿using ToDoListManagement.Models;
 
-namespace ToDoListManagement;
+namespace ToDoListManagement.Storage;
 
 public interface IStorageTasks
 {

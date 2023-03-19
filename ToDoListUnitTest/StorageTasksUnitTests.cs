@@ -1,7 +1,8 @@
 using FluentAssertions;
 using NUnit.Framework;
-using ToDoListManager;
-using ToDoListManager.Models;
+using ToDoListManagement.Models;
+using ToDoListManagement.Storage;
+
 
 namespace ToDoListUnitTest;
 
@@ -12,7 +13,7 @@ public class StorageTasksUnitTests
     {
         var storage = new StorageTasks();
 
-        var item = new ToDoItem("test", "testtest", DateTime.Now);
+        var item = new ToDoItem("test", "testtest");
 
         storage.Add(item);
 
@@ -26,7 +27,7 @@ public class StorageTasksUnitTests
     {
         var storage = new StorageTasks();
 
-        var item = new ToDoItem("test", "testtest", DateTime.Now);
+        var item = new ToDoItem("test", "testtest");
 
         storage.Add(item);
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoListManagement.Models;
 
-namespace ToDoListManagement
+namespace ToDoListManagement.Storage
 {
     public class StorageTasks : IStorageTasks
     {
