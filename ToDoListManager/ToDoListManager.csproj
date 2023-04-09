@@ -7,4 +7,13 @@
     <RootNamespace>ToDoListManagement</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.Models\ToDoList.Models.csproj" />
+    <ProjectReference Include="..\ToDoListBot.DAL\ToDoListBot.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
