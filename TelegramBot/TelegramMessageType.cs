@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TelegramBot
 {
-    enum TelegramMessageType
+    public enum TelegramMessageType
     {
         AddTask,
-        Main
+        Main,
+        GetAllTasks
     }
     
 }
