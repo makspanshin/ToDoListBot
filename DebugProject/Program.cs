@@ -1,5 +1,7 @@
 ﻿using ToDoListBot.DAL;
 using ToDoListBot.Model;
+using ToDoListManagement.Storage;
+
 
 namespace MyApp;
 
@@ -61,5 +63,9 @@ internal class Program
 
             var ttt = db.Users.Where(user => user.NickName == "Tom").ToList().First().Tasks;
         }
+
+        StorageTasks maStorageTasks = new StorageTasks(new ApplicationContext());
+
+        var trstList = maStorageTasks.GetTasks("Tom");
     }
 }
