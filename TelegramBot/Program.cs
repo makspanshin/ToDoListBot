@@ -6,6 +6,8 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Core;
+using TelegramBot.Core.Interfaces;
 using ToDoListBot.DAL;
 using ToDoListManagement;
 using ToDoListManagement.Storage;
@@ -48,7 +50,8 @@ internal class Program
 
                 if (message.Text.ToLower() == "посмотреть задачи")
                 {
-                    await CommandGetAllTasks(update.Message?.From.Username, botClient, message);
+                    await host.Services.GetRequiredService<IResolverCommand>().Get(TelegramMessageType.GetAllTasks)
+                        .CommandEx(update.Message?.From.Username, botClient, message, replyKeyboardMarkup);
                     return;
                 }
 
@@ -113,6 +116,9 @@ internal class Program
                 services.AddDbContext<ApplicationContext>();
                 services.AddScoped<IStorageTasks, StorageTasks>();
                 services.AddSingleton<ToDoListManager>();
+                services.AddScoped<ICommandBot, AddTaskCommand>();
+                services.AddScoped<ICommandBot, GetAllTasksCommand>();
+                services.AddScoped<IResolverCommand, ResolverCommand>();
             })
             .Build();
 
