@@ -1,4 +1,4 @@
-﻿using ToDoListManagement.Models;
+﻿using ToDoListBot.Model;
 using ToDoListManagement.Storage;
 
 namespace ToDoListManagement
@@ -12,25 +12,25 @@ namespace ToDoListManagement
             _storageTasks = storageTasks;
         }
 
-        public void Add(ToDoItem task)
+        public void Add(string NickName, string? Description)
         {
-            _storageTasks.Add(task);
+            _storageTasks.Add(NickName,Description);
         }
 
         //TODO подумать как удалять
         public void Delete(int index)
         {
-            _storageTasks.GetTasks().RemoveAt(index);
+          //  _storageTasks.GetTasks().RemoveAt(index);
         }
 
-        public IEnumerable<ToDoItem> GetAllTasks()
+        public IEnumerable<ToDoItem> GetAllTasks(string NickName)
         {
-            return _storageTasks.GetTasks();
+            return _storageTasks.GetTasks(NickName);
         }
 
         public void СompleteTask(int index)
         {
-            _storageTasks.GetTasks().ElementAt(index).IsDone = true;
+            //_storageTasks.GetTasks().ElementAt(index).IsDone = true;
         }
     }
 }

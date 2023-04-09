@@ -1,10 +1,10 @@
-﻿using ToDoListManagement.Models;
+﻿using ToDoListBot.Model;
 
 namespace ToDoListManagement.Storage;
 
 public interface IStorageTasks
 {
-    void Add(ToDoItem item);
+    void Add(string NickName, string? Description);
     void Remove(ToDoItem item);
-    public List<ToDoItem> GetTasks();
+    public List<ToDoItem> GetTasks(string NickName);
 }
