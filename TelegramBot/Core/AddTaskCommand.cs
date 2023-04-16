@@ -17,11 +17,10 @@ public class AddTaskCommand : ICommandBot
 
     public TelegramMessageType Type => TelegramMessageType.AddTask;
 
-    public async Task CommandEx(string nickName, ITelegramBotClient botClient, Message? message,
-        ReplyKeyboardMarkup replyKeyboardMarkup)
+    public async Task CommandEx(string nickName, ITelegramBotClient botClient, Chat chat, string message,
+        InlineKeyboardMarkup replyKeyboardMarkup)
     {
         var username = nickName;
-        _toDoListManager.Add(username, message.Text);
-        await botClient.SendTextMessageAsync(message.Chat, "Задача добавлена", replyMarkup: replyKeyboardMarkup);
+        _toDoListManager.Add(username, message);
     }
 }

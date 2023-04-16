@@ -17,8 +17,8 @@ internal class GetAllTasksCommand : ICommandBot
 
     public TelegramMessageType Type => TelegramMessageType.GetAllTasks;
 
-    public async Task CommandEx(string nickName, ITelegramBotClient botClient, Message? message,
-        ReplyKeyboardMarkup replyKeyboardMarkup)
+    public async Task CommandEx(string nickName, ITelegramBotClient botClient, Chat chat, string message,
+        InlineKeyboardMarkup replyKeyboardMarkup)
     {
         string tasksString;
         var index = 0;
@@ -37,7 +37,7 @@ internal class GetAllTasksCommand : ICommandBot
             tasksString = "У вас нет задач";
         }
 
-        await botClient.SendTextMessageAsync(message.Chat, tasksString,
+        await botClient.SendTextMessageAsync(chat, tasksString,
             replyMarkup: replyKeyboardMarkup);
     }
 }
