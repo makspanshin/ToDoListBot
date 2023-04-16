@@ -21,13 +21,17 @@ internal class Program
     private static readonly ITelegramBotClient bot =
         new TelegramBotClient("5978132221:AAHCDW7mVeMHZ9Z-Z7p-n3B5ou49ruGbLeM");
 
-    private static readonly ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+    private static readonly InlineKeyboardMarkup inlineKeyboard = new(new[]
     {
-        new KeyboardButton[] {"Посмотреть задачи", "Добавить задачу", "Удалить задачу", "Завершить задачу"}
-    })
-    {
-        ResizeKeyboard = true
-    };
+        // first row
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData("Посмотреть задачи", "GetAllTasks"),
+            InlineKeyboardButton.WithCallbackData("Добавить задачу", "AddTask"),
+            InlineKeyboardButton.WithCallbackData("Удалить задачу", "DeleteTask"),
+            InlineKeyboardButton.WithCallbackData("Завершить задачу", "FinishTask")
+        }
+    });
 
     private static TelegramMessageType msgMessageType = TelegramMessageType.Main;
 
