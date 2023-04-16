@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TelegramBot;
 
-namespace TelegramBot
+public enum TelegramMessageType
 {
-    public enum TelegramMessageType
-    {
-        AddTask,
-        Main,
-        GetAllTasks
-    }
-    
+    AddTask,
+    Main,
+    GetAllTasks,
+    DeleteTask,
+    FinishTask
 }
