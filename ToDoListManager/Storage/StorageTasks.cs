@@ -23,7 +23,7 @@ namespace ToDoListManagement.Storage
 
         public void Add(string NickName, string? Description)
         {
-            var currentUser = _dbContext.Users.Where(x => x.NickName == NickName).FirstOrDefault();
+            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
 
             if (currentUser is not null)
                 _dbContext.ToDoItem.Add(new ToDoItem()
@@ -42,16 +42,27 @@ namespace ToDoListManagement.Storage
 
         public List<ToDoItem> GetTasks(string NickName)
         {
-            var currentUser = _dbContext.Users.Where(x => x.NickName == NickName).FirstOrDefault();
+            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
             if (currentUser is not null)
                 return _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).OrderBy(i => i.DateCreate)
                     .ToList();
-            else
-            {
-                _dbContext.Users.Add(new User() {NickName = NickName});
-                _dbContext.SaveChanges();
-            }
+            _dbContext.Users.Add(new User() {NickName = NickName});
+            _dbContext.SaveChanges();
             return null;
+        }
+
+        public void FinishTask(string NickName, int indexTask)
+        {
+            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+            if (currentUser is not null)
+            {
+                var deleteItem = _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).ToList()
+                    .OrderBy(i => i.DateCreate)
+                    .ElementAt(indexTask);
+                
+                _dbContext.ToDoItem.Remove(deleteItem);
+               _dbContext.SaveChanges();
+            }
         }
 
 

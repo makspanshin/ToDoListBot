@@ -28,9 +28,9 @@ namespace ToDoListManagement
             return _storageTasks.GetTasks(NickName);
         }
 
-        public void СompleteTask(int index)
+        public void СompleteTask(string NickName, int indexTask)
         {
-            //_storageTasks.GetTasks().ElementAt(index).IsDone = true;
+            _storageTasks.FinishTask(NickName, indexTask);
         }
     }
 }

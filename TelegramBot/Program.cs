@@ -28,7 +28,6 @@ internal class Program
         {
             InlineKeyboardButton.WithCallbackData("Посмотреть задачи", "GetAllTasks"),
             InlineKeyboardButton.WithCallbackData("Добавить задачу", "AddTask"),
-            InlineKeyboardButton.WithCallbackData("Удалить задачу", "DeleteTask"),
             InlineKeyboardButton.WithCallbackData("Завершить задачу", "FinishTask")
         }
     });
@@ -67,6 +66,14 @@ internal class Program
                     return;
                 }
 
+                if (Enum.Parse<TelegramMessageType>(callbackQuery.Data) == TelegramMessageType.FinishTask)
+                {
+                    msgMessageType = TelegramMessageType.FinishTask;
+                    await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, "Ведите номер задачи, которую вы хотите завершить",
+                        replyMarkup: null);
+                    return;
+                }
+
                 await host.Services.GetRequiredService<IResolverCommand>()
                     .Get(Enum.Parse<TelegramMessageType>(callbackQuery.Data))
                     .CommandEx(callbackQuery.From.Username, botClient,
@@ -101,6 +108,28 @@ internal class Program
 
         #endregion
 
+        #region FinishTaskCycl
+
+        if (msgMessageType == TelegramMessageType.FinishTask)
+        {
+            if (update.Type == UpdateType.Message)
+            {
+                var username = update.Message.From.Username;
+                var message = update.Message;
+                await host.Services.GetRequiredService<IResolverCommand>()
+                    .Get(TelegramMessageType.FinishTask)
+                    .CommandEx(message.From.Username, botClient,
+                        message.Chat, message.Text,
+                        inlineKeyboard);
+                await botClient.SendTextMessageAsync(message.Chat, "Задача выполнена, продолжайте в том же духе!", replyMarkup: inlineKeyboard);
+            }
+
+            msgMessageType = TelegramMessageType.Main;
+            return;
+        }
+
+        #endregion
+
 
         await botClient.SendTextMessageAsync(update.Message.Chat, "Меню", replyMarkup: inlineKeyboard);
     }
@@ -121,6 +150,7 @@ internal class Program
                 services.AddSingleton<ToDoListManager>();
                 services.AddScoped<ICommandBot, AddTaskCommand>();
                 services.AddScoped<ICommandBot, GetAllTasksCommand>();
+                services.AddScoped<ICommandBot, FinishTaskCommand>();
                 services.AddScoped<IResolverCommand, ResolverCommand>();
             })
             .Build();
