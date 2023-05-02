@@ -33,7 +33,7 @@ internal class Program
     });
 
     private static TelegramMessageType msgMessageType = TelegramMessageType.Main;
-
+    private static IResolverCommand resolverCommand;
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
@@ -69,12 +69,13 @@ internal class Program
                 if (Enum.Parse<TelegramMessageType>(callbackQuery.Data) == TelegramMessageType.FinishTask)
                 {
                     msgMessageType = TelegramMessageType.FinishTask;
-                    await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, "Ведите номер задачи, которую вы хотите завершить",
+                    await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
+                        "Ведите номер задачи, которую вы хотите завершить",
                         replyMarkup: null);
                     return;
                 }
 
-                await host.Services.GetRequiredService<IResolverCommand>()
+                await resolverCommand
                     .Get(Enum.Parse<TelegramMessageType>(callbackQuery.Data))
                     .CommandEx(callbackQuery.From.Username, botClient,
                         callbackQuery.Message.Chat, callbackQuery.Message.Text,
@@ -94,7 +95,7 @@ internal class Program
             {
                 var username = update.Message.From.Username;
                 var message = update.Message;
-                await host.Services.GetRequiredService<IResolverCommand>()
+                await resolverCommand
                     .Get(TelegramMessageType.AddTask)
                     .CommandEx(message.From.Username, botClient,
                         message.Chat, message.Text,
@@ -116,12 +117,13 @@ internal class Program
             {
                 var username = update.Message.From.Username;
                 var message = update.Message;
-                await host.Services.GetRequiredService<IResolverCommand>()
+                await resolverCommand
                     .Get(TelegramMessageType.FinishTask)
                     .CommandEx(message.From.Username, botClient,
                         message.Chat, message.Text,
                         inlineKeyboard);
-                await botClient.SendTextMessageAsync(message.Chat, "Задача выполнена, продолжайте в том же духе!", replyMarkup: inlineKeyboard);
+                await botClient.SendTextMessageAsync(message.Chat, "Задача выполнена, продолжайте в том же духе!",
+                    replyMarkup: inlineKeyboard);
             }
 
             msgMessageType = TelegramMessageType.Main;
@@ -154,7 +156,7 @@ internal class Program
                 services.AddScoped<IResolverCommand, ResolverCommand>();
             })
             .Build();
-
+        resolverCommand = host.Services.GetRequiredService<IResolverCommand>();
         var cts = new CancellationTokenSource();
         var cancellationToken = cts.Token;
         var receiverOptions = new ReceiverOptions();

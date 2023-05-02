@@ -4,26 +4,24 @@ using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Core.Interfaces;
 using ToDoListManagement;
 
+namespace TelegramBot.Core;
 
-namespace TelegramBot.Core
+internal class FinishTaskCommand : ICommandBot
 {
-    internal class FinishTaskCommand: ICommandBot
+    private readonly ToDoListManager _toDoListManager;
+
+    public FinishTaskCommand(ToDoListManager toDoListManager)
     {
-        private readonly ToDoListManager _toDoListManager;
+        _toDoListManager = toDoListManager;
+    }
 
-        public FinishTaskCommand(ToDoListManager toDoListManager)
-        {
-            _toDoListManager = toDoListManager;
-        }
+    public TelegramMessageType Type => TelegramMessageType.FinishTask;
 
-        public TelegramMessageType Type => TelegramMessageType.FinishTask;
-
-        public async Task CommandEx(string nickName, ITelegramBotClient botClient, Chat chat, string message,
-            InlineKeyboardMarkup replyKeyboardMarkup)
-        {
-            var username = nickName;
-            if (int.TryParse(message, out var indexTask))
-                _toDoListManager.СompleteTask(username, indexTask);
-        }
+    public async Task CommandEx(string nickName, ITelegramBotClient botClient, Chat chat, string message,
+        InlineKeyboardMarkup replyKeyboardMarkup)
+    {
+        var username = nickName;
+        if (int.TryParse(message, out var indexTask))
+            _toDoListManager.СompleteTask(username, indexTask);
     }
 }

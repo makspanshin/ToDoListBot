@@ -1,75 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ToDoListBot.DAL;
+﻿using ToDoListBot.DAL;
 using ToDoListBot.Model;
-using System.Collections.Generic;
 
-namespace ToDoListManagement.Storage
+namespace ToDoListManagement.Storage;
+
+public class StorageTasks : IStorageTasks, IDisposable
 {
-    public class StorageTasks : IStorageTasks, IDisposable
+    private readonly ApplicationContext _dbContext;
+
+    public StorageTasks(ApplicationContext db)
     {
-        private ApplicationContext _dbContext;
+        _dbContext = db;
+    }
 
-        public StorageTasks(ApplicationContext db)
+
+    public void Dispose()
+    {
+        if (_dbContext is not null) _dbContext.Dispose();
+    }
+
+    public void Add(string NickName, string? Description)
+    {
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+
+        if (currentUser is not null)
         {
-            _dbContext = db;
-
+            _dbContext.ToDoItem.Add(new ToDoItem
+                {Description = Description, DateCreate = DateTime.Now.ToUniversalTime(), UserId = currentUser.UserId});
         }
 
-        public void Add(string NickName, string? Description)
-        {
-            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        _dbContext.SaveChanges();
+    }
 
-            if (currentUser is not null)
-                _dbContext.ToDoItem.Add(new ToDoItem()
-                { Description = Description, DateCreate = DateTime.Now.ToUniversalTime(), UserId = currentUser.UserId });
-            else
+    public List<ToDoItem> GetTasks(string NickName)
+    {
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        if (currentUser is not null)
+            return _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).OrderBy(i => i.DateCreate)
+                .ToList();
+        _dbContext.Users.Add(new User {NickName = NickName});
+        _dbContext.SaveChanges();
+        return null;
+    }
+
+    public void FinishTask(string NickName, int indexTask)
+    {
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        if (currentUser is not null)
+        {
+            var deleteItem = _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).ToList()
+                .OrderBy(i => i.DateCreate)
+                .ElementAtOrDefault(indexTask);
+
+            if (deleteItem is not null)
             {
-                //TODO обработка когда пользователь не найден
-            }
-            _dbContext.SaveChanges();
-        }
-
-        public List<ToDoItem> GetTasks(string NickName)
-        {
-            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
-            if (currentUser is not null)
-                return _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).OrderBy(i => i.DateCreate)
-                    .ToList();
-            _dbContext.Users.Add(new User() {NickName = NickName});
-            _dbContext.SaveChanges();
-            return null;
-        }
-
-        public void FinishTask(string NickName, int indexTask)
-        {
-            var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
-            if (currentUser is not null)
-            {
-                var deleteItem = _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).ToList()
-                    .OrderBy(i => i.DateCreate)
-                    .ElementAtOrDefault(indexTask);
-
-                if (deleteItem is not null)
-                {
-                    _dbContext.ToDoItem.Remove(deleteItem);
-                    _dbContext.SaveChanges();
-                }
-
-            }
-        }
-
-
-        public void Dispose()
-        {
-            if (_dbContext is not null)
-            {
-                _dbContext.Dispose();
+                _dbContext.ToDoItem.Remove(deleteItem);
+                _dbContext.SaveChanges();
             }
         }
     }
