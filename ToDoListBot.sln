@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugProject", "DebugProjec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBot", "TelegramBot\TelegramBot.csproj", "{50502F22-5848-41AA-B258-0E0CBC4980AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListBot.DAL", "ToDoListBot.DAL\ToDoListBot.DAL.csproj", "{13404264-C794-4FCA-859F-5E0FD40DCCFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListBot.DAL", "ToDoListBot.DAL\ToDoListBot.DAL.csproj", "{13404264-C794-4FCA-859F-5E0FD40DCCFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Models", "ToDoList.Models\ToDoList.Models.csproj", "{E6025E86-DF88-403A-BD9A-A6896012FE79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.Models", "ToDoList.Models\ToDoList.Models.csproj", "{E6025E86-DF88-403A-BD9A-A6896012FE79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
