@@ -35,11 +35,6 @@ namespace ToDoListManagement.Storage
             _dbContext.SaveChanges();
         }
 
-        public void Remove(ToDoItem item)
-        {
-           // items.Remove(item);
-        }
-
         public List<ToDoItem> GetTasks(string NickName)
         {
             var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
@@ -58,10 +53,14 @@ namespace ToDoListManagement.Storage
             {
                 var deleteItem = _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).ToList()
                     .OrderBy(i => i.DateCreate)
-                    .ElementAt(indexTask);
-                
-                _dbContext.ToDoItem.Remove(deleteItem);
-               _dbContext.SaveChanges();
+                    .ElementAtOrDefault(indexTask);
+
+                if (deleteItem is not null)
+                {
+                    _dbContext.ToDoItem.Remove(deleteItem);
+                    _dbContext.SaveChanges();
+                }
+
             }
         }
 

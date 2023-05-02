@@ -22,7 +22,8 @@ namespace TelegramBot.Core
             InlineKeyboardMarkup replyKeyboardMarkup)
         {
             var username = nickName;
-            _toDoListManager.СompleteTask(username,int.Parse(message));
+            if (int.TryParse(message, out var indexTask))
+                _toDoListManager.СompleteTask(username, indexTask);
         }
     }
 }
