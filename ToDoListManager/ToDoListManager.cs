@@ -17,12 +17,6 @@ namespace ToDoListManagement
             _storageTasks.Add(NickName,Description);
         }
 
-        //TODO подумать как удалять
-        public void Delete(int index)
-        {
-          //  _storageTasks.GetTasks().RemoveAt(index);
-        }
-
         public IEnumerable<ToDoItem> GetAllTasks(string NickName)
         {
             return _storageTasks.GetTasks(NickName);
