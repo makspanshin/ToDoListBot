@@ -2,9 +2,10 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Core.Interfaces;
+using TelegramBot.Other;
 using ToDoListManagement;
 
-namespace TelegramBot.Core;
+namespace TelegramBot.Core.Commads;
 
 internal class GetAllTasksCommand : ICommandBot
 {

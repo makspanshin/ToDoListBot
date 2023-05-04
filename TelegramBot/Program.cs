@@ -6,8 +6,9 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using TelegramBot.Core;
+using TelegramBot.Core.Commads;
 using TelegramBot.Core.Interfaces;
+using TelegramBot.Other;
 using ToDoListBot.DAL;
 using ToDoListManagement;
 using ToDoListManagement.Storage;
@@ -164,6 +165,7 @@ internal class Program
                 services.AddScoped<IResolverCommand, ResolverCommand>();
             })
             .Build();
+
         resolverCommand = host.Services.GetRequiredService<IResolverCommand>();
         var cts = new CancellationTokenSource();
         var cancellationToken = cts.Token;

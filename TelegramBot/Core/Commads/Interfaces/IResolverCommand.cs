@@ -1,4 +1,6 @@
-﻿namespace TelegramBot.Core.Interfaces;
+﻿using TelegramBot.Other;
+
+namespace TelegramBot.Core.Interfaces;
 
 public interface IResolverCommand
 {

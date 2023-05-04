@@ -12,18 +12,18 @@ public class ToDoListManager
         _storageTasks = storageTasks;
     }
 
-    public void Add(string NickName, string? Description)
+    public void Add(string nickName, string? description)
     {
-        _storageTasks.Add(NickName, Description);
+        _storageTasks.Add(nickName, description);
     }
 
-    public IEnumerable<ToDoItem> GetAllTasks(string NickName)
+    public IEnumerable<ToDoItem> GetAllTasks(string nickName)
     {
-        return _storageTasks.GetTasks(NickName);
+        return _storageTasks.GetTasks(nickName);
     }
 
-    public void СompleteTask(string NickName, int indexTask)
+    public void СompleteTask(string nickName, int indexTask)
     {
-        _storageTasks.FinishTask(NickName, indexTask);
+        _storageTasks.FinishTask(nickName, indexTask);
     }
 }

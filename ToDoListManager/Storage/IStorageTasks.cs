@@ -4,7 +4,7 @@ namespace ToDoListManagement.Storage;
 
 public interface IStorageTasks
 {
-    void Add(string NickName, string? Description);
-    List<ToDoItem> GetTasks(string NickName);
-    void FinishTask(string NickName, int indexTask);
+    void Add(string nickName, string? description);
+    List<ToDoItem> GetTasks(string nickName);
+    void FinishTask(string nickName, int indexTask);
 }

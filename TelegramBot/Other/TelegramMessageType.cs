@@ -1,4 +1,4 @@
-﻿namespace TelegramBot;
+﻿namespace TelegramBot.Other;
 
 public enum TelegramMessageType
 {

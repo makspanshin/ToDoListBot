@@ -18,33 +18,33 @@ public class StorageTasks : IStorageTasks, IDisposable
         if (_dbContext is not null) _dbContext.Dispose();
     }
 
-    public void Add(string NickName, string? Description)
+    public void Add(string nickName, string? description)
     {
-        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == nickName);
 
         if (currentUser is not null)
         {
             _dbContext.ToDoItem.Add(new ToDoItem
-                {Description = Description, DateCreate = DateTime.Now.ToUniversalTime(), UserId = currentUser.UserId});
+                {Description = description, DateCreate = DateTime.Now.ToUniversalTime(), UserId = currentUser.UserId});
         }
 
         _dbContext.SaveChanges();
     }
 
-    public List<ToDoItem> GetTasks(string NickName)
+    public List<ToDoItem> GetTasks(string nickName)
     {
-        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == nickName);
         if (currentUser is not null)
             return _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).OrderBy(i => i.DateCreate)
                 .ToList();
-        _dbContext.Users.Add(new User {NickName = NickName});
+        _dbContext.Users.Add(new User {NickName = nickName});
         _dbContext.SaveChanges();
         return null;
     }
 
-    public void FinishTask(string NickName, int indexTask)
+    public void FinishTask(string nickName, int indexTask)
     {
-        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == NickName);
+        var currentUser = _dbContext.Users.FirstOrDefault(x => x.NickName == nickName);
         if (currentUser is not null)
         {
             var deleteItem = _dbContext.ToDoItem.Where(x => x.UserId == currentUser.UserId).ToList()
