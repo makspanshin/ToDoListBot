@@ -50,8 +50,6 @@ internal class Program
 
         if (msgMessageType == TelegramMessageType.Main)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(update));
-
             if (update.Type == UpdateType.CallbackQuery)
             {
                 var callbackQuery = update.CallbackQuery;
