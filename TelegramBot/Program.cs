@@ -27,13 +27,21 @@ internal class Program
         new[]
         {
             InlineKeyboardButton.WithCallbackData("Посмотреть задачи", "GetAllTasks"),
+
+        },
+        new[]
+        {
             InlineKeyboardButton.WithCallbackData("Добавить задачу", "AddTask"),
+        },
+        new[]
+        {
             InlineKeyboardButton.WithCallbackData("Завершить задачу", "FinishTask")
+
         }
     });
-
     private static TelegramMessageType msgMessageType = TelegramMessageType.Main;
     private static IResolverCommand resolverCommand;
+
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
@@ -61,7 +69,7 @@ internal class Program
                 if (Enum.Parse<TelegramMessageType>(callbackQuery.Data) == TelegramMessageType.AddTask)
                 {
                     msgMessageType = TelegramMessageType.AddTask;
-                    await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, "Ведите задачу",
+                    await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, "Введите задачу",
                         replyMarkup: null);
                     return;
                 }
@@ -70,7 +78,7 @@ internal class Program
                 {
                     msgMessageType = TelegramMessageType.FinishTask;
                     await botClient.SendTextMessageAsync(callbackQuery.Message.Chat,
-                        "Ведите номер задачи, которую вы хотите завершить",
+                        "Введите номер задачи, которую вы хотите завершить",
                         replyMarkup: null);
                     return;
                 }
