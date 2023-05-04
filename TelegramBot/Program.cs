@@ -46,17 +46,6 @@ internal class Program
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        # region first message
-
-        if (update.Message?.Text.ToLower() == "/start")
-        {
-            await botClient.SendTextMessageAsync(update.Message.Chat, "Добро пожаловать на борт, добрый путник!",
-                replyMarkup: inlineKeyboard);
-            return;
-        }
-
-        #endregion
-
         #region MainCycl
 
         if (msgMessageType == TelegramMessageType.Main)
@@ -142,7 +131,8 @@ internal class Program
         #endregion
 
 
-        await botClient.SendTextMessageAsync(update.Message.Chat, "Меню", replyMarkup: inlineKeyboard);
+        if (update.Message != null)
+            await botClient.SendTextMessageAsync(update.Message.Chat, "Меню", replyMarkup: inlineKeyboard);
     }
 
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception,
@@ -153,7 +143,24 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        host = Host.CreateDefaultBuilder(args)
+        ConfigureServices();
+        resolverCommand = host.Services.GetRequiredService<IResolverCommand>();
+
+        var cts = new CancellationTokenSource();
+        var cancellationToken = cts.Token;
+        var receiverOptions = new ReceiverOptions();
+        bot.StartReceiving(
+            HandleUpdateAsync,
+            HandleErrorAsync,
+            receiverOptions,
+            cancellationToken
+        );
+        Console.ReadLine();
+    }
+
+    private static void ConfigureServices()
+    {
+        host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 services.AddDbContext<ApplicationContext>();
@@ -165,17 +172,5 @@ internal class Program
                 services.AddScoped<IResolverCommand, ResolverCommand>();
             })
             .Build();
-
-        resolverCommand = host.Services.GetRequiredService<IResolverCommand>();
-        var cts = new CancellationTokenSource();
-        var cancellationToken = cts.Token;
-        var receiverOptions = new ReceiverOptions();
-        bot.StartReceiving(
-            HandleUpdateAsync,
-            HandleErrorAsync,
-            receiverOptions,
-            cancellationToken
-        );
-        Console.ReadLine();
     }
 }
