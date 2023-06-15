@@ -7,8 +7,8 @@ namespace ToDoListBot.DAL
 {
     public class ApplicationContext:DbContext
     {
-        public DbSet<User> Users => Set<User>();
-        public DbSet<ToDoItem> ToDoItem => Set<ToDoItem>();
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ToDoItem> ToDoItem { get; set; }
 
         private readonly string? connectionString;
         public ApplicationContext()
@@ -23,7 +23,7 @@ namespace ToDoListBot.DAL
 
             connectionString = config.GetConnectionString("DefaultConnection");
 
-            Database.EnsureCreated();
+            if (Database != null) Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
